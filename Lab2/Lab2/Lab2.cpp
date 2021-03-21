@@ -11,8 +11,6 @@ int main()
 	unsigned long long d;
 	unsigned long long n = generateKeys(e, d);
 	unsigned long long openMsg, cryptMsg, afterDecryptMsg;
-	/*crypt(123, e, n, &cryptMsg);
-	decrypt(cryptMsg, d, n, &afterDecryptMsg);*/
 
 	
 	

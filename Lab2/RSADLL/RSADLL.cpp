@@ -39,46 +39,68 @@ string convertToBinary(unsigned long long num) {
 	return r;
 }
 
-unsigned long long binaryPow(unsigned long long data, unsigned long long key, unsigned long long n) {
-	string binary = convertToBinary(key);
-	unsigned long long res = data;
-	for (int i = 1; i < binary.size(); i++) {
-		if (binary[i] == '0') {
-			res = (res * res) % n;
-		}
-		else if (binary[i] == '1') {
-			res = (res * res) * data % n;
-		}
+
+template <class T>
+T mul_mod(T a, T b, T m) {
+	if (m == 0) return a * b;
+
+	T r = T();
+
+	while (a > 0) {
+		if (a & 1)
+			if ((r += b) > m) r %= m;
+		a >>= 1;
+		if ((b <<= 1) > m) b %= m;
 	}
-	return res;
-	//int count = 0;									
-	//unsigned tempKey = key;
+	return r;
+}
 
-	//while (tempKey != 1) 
-	//{
-	//	tempKey /= 2;
-	//	count++;
-	//}
+template <class T>
+T pow_mod(T a, T n, T m) {
+	T r = 1;
 
-	//unsigned result = data;
+	while (n > 0) {
+		if (n & 1)
+			r = mul_mod(r, a, m);
+		a = mul_mod(a, a, m);
+		n >>= 1;
+	}
+	return r;
+}
 
-	//for (int i = count - 1; i >= 0; i--)   
-	//{
-	//	result *= result;
-	//	result %= n; 
-	//	if ((key >> i) & 1)  
-	//	{
-	//		result *= data;
-	//		result %= n;
+
+unsigned long long binaryPow(unsigned long long data, unsigned long long key, unsigned long long n) {
+
+
+	return pow_mod(data, key, n);
+
+	/*data %= n;
+	unsigned long long result = 1;
+	while (key > 0) {
+		if (key & 1) result = (unsigned long long)(result * data) % n;
+		data = (unsigned long long)(data * data) % n;
+		key >>= 1;
+	}
+	return result;*/
+
+	//string binary = convertToBinary(key);
+	//unsigned long long res = data;
+	//for (int i = 1; i < binary.size(); i++) {
+	//	if (binary[i] == '0') {
+	//		res = (res * res) % n;
+	//	}
+	//	else if (binary[i] == '1') {
+	//		res = (res * res) * data % n;
 	//	}
 	//}
+	//return res;
 
-	//return result;
 }
 
 unsigned long long __stdcall generateKeys(unsigned long long& e, unsigned long long& d) {
-	unsigned long long p = getPrime();
-	unsigned long long q = getPrime();
+
+	unsigned long long p = getPrime();//  getPrime();//2999000009;
+	unsigned long long q = getPrime();// getPrime(); //2999000399 
 	while (p == q)
 	{
 		p = getPrime();
@@ -90,6 +112,7 @@ unsigned long long __stdcall generateKeys(unsigned long long& e, unsigned long l
 	while (gcd(e, fi) != 1) {
 		e += 2;
 	}
+
 
 
 	unsigned long long  k = 1;
