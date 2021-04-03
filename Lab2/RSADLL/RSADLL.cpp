@@ -13,7 +13,7 @@ using namespace std;
 ull getPrime() {
 	std::random_device rd;
 	std::default_random_engine generator(rd());
-	std::uniform_int_distribution<ull> distribution(3, 0xFFFFFFFF);
+	std::uniform_int_distribution<ull> distribution(3, 0xFFFFFFF);
 
 	ull number = distribution(generator);
 	if (number % 2 == 0) number++;
@@ -44,12 +44,6 @@ string convertToBinary(ull num) {
 	return r;
 }
 
-//ull mul_mod(ull a, ull b, ull m) {
-//	ld kd = ((ld)a * b) / m;
-//	ull k = (ull)kd;
-//	ull res = a * b - k * m;
-//	return (res % m + m) % m;
-//}
 
 ull mul_mod(ull a, ull b, ull m) {
 	if (m == 0) return a * b;
@@ -110,8 +104,6 @@ ull __stdcall generateKeys(ull& e, ull& d) {
 	ull fi_phi = phi(fi);
 	d = binaryPow(e, fi_phi - 1, fi);
 
-
-	cout << "p: " << p << " q: " << q << " fi:" << fi << " r: " << mul_mod(e, d, fi) << "\n";
 	return n;
 }
 
